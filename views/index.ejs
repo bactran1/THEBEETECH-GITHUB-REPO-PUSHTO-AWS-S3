@@ -3,12 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FlowMind Robotics</title>
+  <title>NexusOmni Lab</title>
 
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  <!-- GSAP -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
@@ -33,7 +31,6 @@
       overflow-x: hidden;
     }
 
-    /* NAV */
     nav {
       position: fixed;
       top: 0;
@@ -98,7 +95,6 @@
       margin: 0;
     }
 
-    /* BUTTON */
     .btn {
       display: inline-block;
       margin-top: 30px;
@@ -116,7 +112,6 @@
       opacity: 0.9;
     }
 
-    /* FLOW CANVAS */
     #flowCanvas {
       position: fixed;
       top: 0;
@@ -125,7 +120,6 @@
       opacity: 0.25;
     }
 
-    /* FADE-IN BASE */
     .fade {
       opacity: 0;
       transform: translateY(40px);
@@ -138,7 +132,7 @@
 <canvas id="flowCanvas"></canvas>
 
 <nav>
-  <div class="logo">FlowMind</div>
+  <div class="logo">NexusOmni Lab</div>
   <div>
     <a href="#problem">Problem</a>
     <a href="#solution">Solution</a>
@@ -147,7 +141,6 @@
   </div>
 </nav>
 
-<!-- HERO -->
 <section>
   <h1 class="fade">Rebuilding Material Handling<br><span class="accent">with Intelligence</span></h1>
   <p class="fade">We are not building a warehouse.<br>We are proving a new control paradigm.</p>
@@ -225,7 +218,6 @@
 <script>
   gsap.registerPlugin(ScrollTrigger);
 
-  // Fade-in animation
   gsap.utils.toArray('.fade').forEach(el => {
     gsap.to(el, {
       opacity: 1,
@@ -239,7 +231,6 @@
     });
   });
 
-  // FLOW BACKGROUND
   const canvas = document.getElementById("flowCanvas");
   const ctx = canvas.getContext("2d");
 
