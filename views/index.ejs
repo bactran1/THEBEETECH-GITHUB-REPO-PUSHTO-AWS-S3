@@ -1,156 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NexusOmni Lab</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexusOmni Lab</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
-  <style>
-    :root {
-      --bg: #0a0a0a;
-      --fg: #ffffff;
-      --muted: #9a9a9a;
-      --line: #1a1a1a;
-      --accent: #ff6a00;
-    }
+<style>
+:root {
+  --bg:#0a0a0a;
+  --fg:#fff;
+  --muted:#9a9a9a;
+  --line:#1a1a1a;
+  --accent:#ff6a00;
+}
 
-  #demo {
-    position: relative;
-    height: 120vh;
-    }
+body {
+  margin:0;
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--fg);
+  overflow-x:hidden;
+}
 
-  #conveyorCanvas {
-    width: 100%;
-    height: 500px;
-    margin-top: 40px;
-    border-radius: 12px;
-    background: linear-gradient(to bottom, #111, #0a0a0a);
-    }
+nav {
+  position:fixed;
+  width:100%;
+  top:0;
+  padding:16px 24px;
+  backdrop-filter:blur(12px);
+  background:rgba(0,0,0,0.4);
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  z-index:10;
+}
 
-    * { box-sizing: border-box; }
+nav a { color:var(--muted); margin-left:16px; text-decoration:none; }
+nav a:hover { color:#fff; }
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: var(--bg);
-      color: var(--fg);
-      font-family: 'Inter', -apple-system, system-ui, sans-serif;
-      scroll-behavior: smooth;
-      overflow-x: hidden;
-    }
+section {
+  min-height:100vh;
+  padding:120px 24px;
+  text-align:center;
+  max-width:1000px;
+  margin:auto;
+}
 
-    nav {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      backdrop-filter: blur(12px);
-      background: rgba(10,10,10,0.5);
-      border-bottom: 1px solid var(--line);
-      padding: 16px 24px;
-      z-index: 100;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+h1 { font-size:clamp(2.5rem,6vw,4rem); }
+h2 { font-size:clamp(1.8rem,4vw,2.5rem); }
+p { color:var(--muted); font-size:1.2rem; }
 
-    nav .logo {
-      font-weight: 600;
-      letter-spacing: 0.5px;
-    }
+.accent { color:var(--accent); }
 
-    nav a {
-      color: var(--muted);
-      text-decoration: none;
-      margin-left: 20px;
-      font-size: 0.9rem;
-    }
+.divider { height:1px; background:var(--line); }
 
-    nav a:hover { color: var(--fg); }
+.btn {
+  display:inline-block;
+  margin-top:30px;
+  padding:14px 28px;
+  background:var(--accent);
+  color:#fff;
+  border-radius:8px;
+  text-decoration:none;
+}
 
-    section {
-      min-height: 100vh;
-      padding: 120px 24px 80px;
-      max-width: 1100px;
-      margin: auto;
-      text-align: center;
-      position: relative;
-    }
+.fade {
+  opacity:0;
+  transform:translateY(40px);
+}
 
-    h1 {
-      font-size: clamp(2.5rem, 6vw, 4rem);
-      font-weight: 600;
-      margin-bottom: 20px;
-    }
-
-    h2 {
-      font-size: clamp(1.8rem, 4vw, 2.5rem);
-      margin-bottom: 16px;
-    }
-
-    p {
-      color: var(--muted);
-      font-size: 1.2rem;
-      max-width: 700px;
-      margin: auto;
-    }
-
-    .accent { color: var(--accent); }
-
-    .divider {
-      height: 1px;
-      background: var(--line);
-      width: 100%;
-      margin: 0;
-    }
-
-    .btn {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 14px 28px;
-      background: var(--accent);
-      border-radius: 8px;
-      text-decoration: none;
-      color: white;
-      font-weight: 500;
-      transition: transform 0.2s ease, opacity 0.2s;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      opacity: 0.9;
-    }
-
-    #flowCanvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1;
-      opacity: 0.25;
-    }
-
-    .fade {
-      opacity: 0;
-      transform: translateY(40px);
-    }
-  </style>
+/* Conveyor */
+#conveyorCanvas {
+  width:100%;
+  height:500px;
+  margin-top:40px;
+  border-radius:12px;
+  background:linear-gradient(#111,#0a0a0a);
+}
+</style>
 </head>
 
 <body>
 
-<canvas id="flowCanvas"></canvas>
-
 <nav>
-  <div class="logo">NexusOmni Lab</div>
+  <div>NexusOmni Lab</div>
   <div>
     <a href="#problem">Problem</a>
     <a href="#solution">Solution</a>
-    <a href="#why">Why Us</a>
-    <a href="#contact">Contact</a>
+    <a href="#demo">Demo</a>
   </div>
 </nav>
 
@@ -168,49 +110,26 @@
 
 <div class="divider"></div>
 
-<section>
-  <h2 class="fade">Robotics evolved.<br>MHE didn’t.</h2>
-  <p class="fade">Control systems should be learned, not programmed.</p>
-</section>
-
-<div class="divider"></div>
-
 <section id="solution">
-  <h2 class="fade">An AI control layer<br>for physical logistics</h2>
+  <h2 class="fade">AI control layer for logistics</h2>
   <p class="fade">Simulation → Learning → Real-world deployment</p>
   <p class="fade">Powered by :contentReference[oaicite:0]{index=0}</p>
 </section>
 
 <div class="divider"></div>
 
-<section>
-  <h2 class="fade">Start small.<br>Solve completely.</h2>
-  <p class="fade">One system. One problem. Fully solved.</p>
+<section id="demo">
+  <h2 class="fade">Autonomous Flow Control</h2>
+  <p class="fade">Scroll to see intelligent routing in action</p>
+  <canvas id="conveyorCanvas"></canvas>
 </section>
 
 <div class="divider"></div>
 
 <section>
-  <h2 class="fade">What we prove</h2>
-  <p class="fade">
-    AI outperforms rule-based control.<br>
-    Simulation transfers to reality.<br>
-    Systems become modular.
-  </p>
-</section>
-
-<div class="divider"></div>
-
-<section id="why">
   <h2 class="fade">Why Us</h2>
-  <p class="fade">
-    We come from the Material Handling Equipment world.<br>
-    We understand real systems—not just models.
-  </p>
-  <p class="fade">
-    This isn’t exploration.<br>
-    <span class="accent">It’s execution.</span>
-  </p>
+  <p class="fade">We come from the MHE world. We understand real systems.</p>
+  <p class="fade"><span class="accent">This isn’t exploration. It’s execution.</span></p>
 </section>
 
 <div class="divider"></div>
@@ -222,147 +141,95 @@
 
 <div class="divider"></div>
 
-<section id="contact">
-  <h2 class="fade">Join Us</h2>
-  <p class="fade">We’re building the future of industrial automation.</p>
-  <a href="mailto:bactran@bac-control.com" class="btn fade">Contact</a>
+<section>
+  <h2 class="fade">Contact</h2>
+  <a href="mailto:bactran@bac-control.com" class="btn fade">bactran@bac-control.com</a>
 </section>
 
 <script>
-  gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger);
 
-  gsap.utils.toArray('.fade').forEach(el => {
-    gsap.to(el, {
-      opacity: 1,
-      y: 0,
-      duration: 1,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: el,
-        start: "top 85%"
-      }
-    });
+// fade
+gsap.utils.toArray('.fade').forEach(el=>{
+  gsap.to(el,{
+    opacity:1,
+    y:0,
+    duration:1,
+    scrollTrigger:{trigger:el,start:"top 85%"}
   });
-
-  const canvas = document.getElementById("flowCanvas");
-  const ctx = canvas.getContext("2d");
-
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  resize();
-  window.addEventListener("resize", resize);
-
-  const particles = [];
-  for (let i = 0; i < 80; i++) {
-    particles.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      speed: Math.random() * 0.5 + 0.2
-    });
-  }
-
-  function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    particles.forEach(p => {
-      p.x += p.speed * 2;
-      if (p.x > canvas.width) p.x = 0;
-
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, 1.2, 0, Math.PI * 2);
-      ctx.fillStyle = "#ff6a00";
-      ctx.fill();
-    });
-
-    requestAnimationFrame(animate);
-  }
-
-  animate();
-</script>
-<script>
-const conveyorCanvas = document.getElementById("conveyorCanvas");
-const ctx2 = conveyorCanvas.getContext("2d");
-
-function resizeConveyor() {
-  conveyorCanvas.width = conveyorCanvas.clientWidth;
-  conveyorCanvas.height = 500;
-}
-resizeConveyor();
-window.addEventListener("resize", resizeConveyor);
-
-// Package state
-let progress = 0;
-
-// Scroll-driven animation
-gsap.to({}, {
-  scrollTrigger: {
-    trigger: "#demo",
-    start: "top center",
-    end: "bottom top",
-    scrub: true
-  },
-  onUpdate: function(self) {
-    progress = self.progress;
-  }
 });
 
-function drawConveyor() {
-  ctx2.clearRect(0, 0, conveyorCanvas.width, conveyorCanvas.height);
+// Conveyor animation
+const canvas=document.getElementById("conveyorCanvas");
+const ctx=canvas.getContext("2d");
 
-  const w = conveyorCanvas.width;
-  const h = conveyorCanvas.height;
-
-  // Draw conveyor path (main + branch)
-  ctx2.strokeStyle = "#333";
-  ctx2.lineWidth = 6;
-
-  // Main line
-  ctx2.beginPath();
-  ctx2.moveTo(50, h/2);
-  ctx2.lineTo(w - 50, h/2);
-  ctx2.stroke();
-
-  // Branch line (divert)
-  ctx2.beginPath();
-  ctx2.moveTo(w * 0.6, h/2);
-  ctx2.lineTo(w * 0.8, h * 0.75);
-  ctx2.stroke();
-
-  // Omniwheel rollers (visual hint)
-  for (let x = 60; x < w - 60; x += 30) {
-    ctx2.beginPath();
-    ctx2.arc(x, h/2, 6, 0, Math.PI * 2);
-    ctx2.fillStyle = "#666";
-    ctx2.fill();
-  }
-
-  // Package path logic
-  let x = 50 + progress * (w - 100);
-  let y = h / 2;
-
-  // Divert behavior (simulate AI decision)
-  if (progress > 0.6) {
-    let t = (progress - 0.6) / 0.4;
-    x = w * 0.6 + t * (w * 0.2);
-    y = h/2 + t * (h * 0.25);
-  }
-
-  // Draw package
-  ctx2.fillStyle = "#ff6a00";
-  ctx2.fillRect(x - 10, y - 10, 20, 20);
-
-  // Glow effect
-  ctx2.shadowColor = "#ff6a00";
-  ctx2.shadowBlur = 15;
-  ctx2.fillRect(x - 10, y - 10, 20, 20);
-  ctx2.shadowBlur = 0;
-
-  requestAnimationFrame(drawConveyor);
+function resize(){
+  canvas.width=canvas.clientWidth;
+  canvas.height=500;
 }
+resize();
+window.addEventListener("resize",resize);
 
-drawConveyor();
+let progress=0;
+
+gsap.to({},{
+  scrollTrigger:{
+    trigger:"#demo",
+    start:"top center",
+    end:"bottom top",
+    scrub:true
+  },
+  onUpdate:self=>progress=self.progress
+});
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  const w=canvas.width;
+  const h=canvas.height;
+
+  // conveyor line
+  ctx.strokeStyle="#333";
+  ctx.lineWidth=6;
+  ctx.beginPath();
+  ctx.moveTo(50,h/2);
+  ctx.lineTo(w-50,h/2);
+  ctx.stroke();
+
+  // branch
+  ctx.beginPath();
+  ctx.moveTo(w*0.6,h/2);
+  ctx.lineTo(w*0.8,h*0.75);
+  ctx.stroke();
+
+  // rollers
+  for(let x=60;x<w-60;x+=30){
+    ctx.beginPath();
+    ctx.arc(x,h/2,5,0,Math.PI*2);
+    ctx.fillStyle="#555";
+    ctx.fill();
+  }
+
+  // package position
+  let x=50+progress*(w-100);
+  let y=h/2;
+
+  if(progress>0.6){
+    let t=(progress-0.6)/0.4;
+    x=w*0.6+t*(w*0.2);
+    y=h/2+t*(h*0.25);
+  }
+
+  // draw package
+  ctx.fillStyle="#ff6a00";
+  ctx.shadowColor="#ff6a00";
+  ctx.shadowBlur=20;
+  ctx.fillRect(x-10,y-10,20,20);
+  ctx.shadowBlur=0;
+
+  requestAnimationFrame(draw);
+}
+draw();
 </script>
 
 </body>
