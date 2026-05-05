@@ -19,6 +19,19 @@
       --accent: #ff6a00;
     }
 
+  #demo {
+    position: relative;
+    height: 120vh;
+    }
+
+  #conveyorCanvas {
+    width: 100%;
+    height: 500px;
+    margin-top: 40px;
+    border-radius: 12px;
+    background: linear-gradient(to bottom, #111, #0a0a0a);
+    }
+
     * { box-sizing: border-box; }
 
     html, body {
@@ -267,6 +280,89 @@
   }
 
   animate();
+</script>
+<script>
+const conveyorCanvas = document.getElementById("conveyorCanvas");
+const ctx2 = conveyorCanvas.getContext("2d");
+
+function resizeConveyor() {
+  conveyorCanvas.width = conveyorCanvas.clientWidth;
+  conveyorCanvas.height = 500;
+}
+resizeConveyor();
+window.addEventListener("resize", resizeConveyor);
+
+// Package state
+let progress = 0;
+
+// Scroll-driven animation
+gsap.to({}, {
+  scrollTrigger: {
+    trigger: "#demo",
+    start: "top center",
+    end: "bottom top",
+    scrub: true
+  },
+  onUpdate: function(self) {
+    progress = self.progress;
+  }
+});
+
+function drawConveyor() {
+  ctx2.clearRect(0, 0, conveyorCanvas.width, conveyorCanvas.height);
+
+  const w = conveyorCanvas.width;
+  const h = conveyorCanvas.height;
+
+  // Draw conveyor path (main + branch)
+  ctx2.strokeStyle = "#333";
+  ctx2.lineWidth = 6;
+
+  // Main line
+  ctx2.beginPath();
+  ctx2.moveTo(50, h/2);
+  ctx2.lineTo(w - 50, h/2);
+  ctx2.stroke();
+
+  // Branch line (divert)
+  ctx2.beginPath();
+  ctx2.moveTo(w * 0.6, h/2);
+  ctx2.lineTo(w * 0.8, h * 0.75);
+  ctx2.stroke();
+
+  // Omniwheel rollers (visual hint)
+  for (let x = 60; x < w - 60; x += 30) {
+    ctx2.beginPath();
+    ctx2.arc(x, h/2, 6, 0, Math.PI * 2);
+    ctx2.fillStyle = "#666";
+    ctx2.fill();
+  }
+
+  // Package path logic
+  let x = 50 + progress * (w - 100);
+  let y = h / 2;
+
+  // Divert behavior (simulate AI decision)
+  if (progress > 0.6) {
+    let t = (progress - 0.6) / 0.4;
+    x = w * 0.6 + t * (w * 0.2);
+    y = h/2 + t * (h * 0.25);
+  }
+
+  // Draw package
+  ctx2.fillStyle = "#ff6a00";
+  ctx2.fillRect(x - 10, y - 10, 20, 20);
+
+  // Glow effect
+  ctx2.shadowColor = "#ff6a00";
+  ctx2.shadowBlur = 15;
+  ctx2.fillRect(x - 10, y - 10, 20, 20);
+  ctx2.shadowBlur = 0;
+
+  requestAnimationFrame(drawConveyor);
+}
+
+drawConveyor();
 </script>
 
 </body>
