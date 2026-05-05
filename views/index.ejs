@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FlowMind Robotics</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --fg: #ffffff;
+      --muted: #9a9a9a;
+      --line: #1a1a1a;
+      --accent: #ff6a00;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Inter', -apple-system, system-ui, sans-serif;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      backdrop-filter: blur(12px);
+      background: rgba(10,10,10,0.5);
+      border-bottom: 1px solid var(--line);
+      padding: 16px 24px;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav .logo {
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 0.9rem;
+    }
+
+    nav a:hover { color: var(--fg); }
+
+    section {
+      min-height: 100vh;
+      padding: 120px 24px 80px;
+      max-width: 1100px;
+      margin: auto;
+      text-align: center;
+      position: relative;
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      margin-bottom: 16px;
+    }
+
+    p {
+      color: var(--muted);
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin: auto;
+    }
+
+    .accent { color: var(--accent); }
+
+    .divider {
+      height: 1px;
+      background: var(--line);
+      width: 100%;
+      margin: 0;
+    }
+
+    /* BUTTON */
+    .btn {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 14px 28px;
+      background: var(--accent);
+      border-radius: 8px;
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      transition: transform 0.2s ease, opacity 0.2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      opacity: 0.9;
+    }
+
+    /* FLOW CANVAS */
+    #flowCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      opacity: 0.25;
+    }
+
+    /* FADE-IN BASE */
+    .fade {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+  </style>
+</head>
+
+<body>
+
+<canvas id="flowCanvas"></canvas>
+
+<nav>
+  <div class="logo">FlowMind</div>
+  <div>
+    <a href="#problem">Problem</a>
+    <a href="#solution">Solution</a>
+    <a href="#why">Why Us</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section>
+  <h1 class="fade">Rebuilding Material Handling<br><span class="accent">with Intelligence</span></h1>
+  <p class="fade">We are not building a warehouse.<br>We are proving a new control paradigm.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="problem">
+  <h2 class="fade">Material handling is still <span class="accent">rule-based</span></h2>
+  <p class="fade">Rigid PLC systems. Hard-coded logic. No global optimization.</p>
+</section>
+
+<div class="divider"></div>
+
+<section>
+  <h2 class="fade">Robotics evolved.<br>MHE didn’t.</h2>
+  <p class="fade">Control systems should be learned, not programmed.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="solution">
+  <h2 class="fade">An AI control layer<br>for physical logistics</h2>
+  <p class="fade">Simulation → Learning → Real-world deployment</p>
+  <p class="fade">Powered by :contentReference[oaicite:0]{index=0}</p>
+</section>
+
+<div class="divider"></div>
+
+<section>
+  <h2 class="fade">Start small.<br>Solve completely.</h2>
+  <p class="fade">One system. One problem. Fully solved.</p>
+</section>
+
+<div class="divider"></div>
+
+<section>
+  <h2 class="fade">What we prove</h2>
+  <p class="fade">
+    AI outperforms rule-based control.<br>
+    Simulation transfers to reality.<br>
+    Systems become modular.
+  </p>
+</section>
+
+<div class="divider"></div>
+
+<section id="why">
+  <h2 class="fade">Why Us</h2>
+  <p class="fade">
+    We come from the Material Handling Equipment world.<br>
+    We understand real systems—not just models.
+  </p>
+  <p class="fade">
+    This isn’t exploration.<br>
+    <span class="accent">It’s execution.</span>
+  </p>
+</section>
+
+<div class="divider"></div>
+
+<section>
+  <h2 class="fade">Every conveyor becomes intelligent</h2>
+  <p class="fade">Software-defined infrastructure. Continuous optimization.</p>
+</section>
+
+<div class="divider"></div>
+
+<section id="contact">
+  <h2 class="fade">Join Us</h2>
+  <p class="fade">We’re building the future of industrial automation.</p>
+  <a href="mailto:hello@flowmind.ai" class="btn fade">Contact</a>
+</section>
+
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Fade-in animation
+  gsap.utils.toArray('.fade').forEach(el => {
+    gsap.to(el, {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: el,
+        start: "top 85%"
+      }
+    });
+  });
+
+  // FLOW BACKGROUND
+  const canvas = document.getElementById("flowCanvas");
+  const ctx = canvas.getContext("2d");
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener("resize", resize);
+
+  const particles = [];
+  for (let i = 0; i < 80; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      speed: Math.random() * 0.5 + 0.2
+    });
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach(p => {
+      p.x += p.speed * 2;
+      if (p.x > canvas.width) p.x = 0;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 1.2, 0, Math.PI * 2);
+      ctx.fillStyle = "#ff6a00";
+      ctx.fill();
+    });
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+</script>
+
+</body>
+</html>
