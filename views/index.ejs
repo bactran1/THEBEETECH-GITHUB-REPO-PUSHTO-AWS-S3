@@ -168,12 +168,15 @@ window.onload = function() {
 
   gsap.registerPlugin(ScrollTrigger);
 
-  // Fade animations
+  // =========================
+  // FADE-IN TEXT (FIXED)
+  // =========================
   gsap.utils.toArray('.fade').forEach(el=>{
     gsap.to(el,{
       opacity:1,
       y:0,
       duration:1,
+      ease:"power3.out",
       scrollTrigger:{
         trigger:el,
         start:"top 85%"
@@ -181,7 +184,9 @@ window.onload = function() {
     });
   });
 
-  // Conveyor animation
+  // =========================
+  // CANVAS SETUP
+  // =========================
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
 
@@ -202,50 +207,92 @@ window.onload = function() {
     onUpdate:self => progress = self.progress
   });
 
+  // =========================
+  // DRAW LOOP
+  // =========================
   function draw() {
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
     const w = canvas.width;
     const h = canvas.height;
 
-    // main conveyor
+    const mergeX = w * 0.65;
+    const mainY = h / 2;
+    const branchY = h * 0.75;
+
+    // MAIN LINE
     ctx.strokeStyle="#333";
     ctx.lineWidth=6;
     ctx.beginPath();
-    ctx.moveTo(50,h/2);
-    ctx.lineTo(w-50,h/2);
+    ctx.moveTo(50, mainY);
+    ctx.lineTo(w - 50, mainY);
     ctx.stroke();
 
-    // branch
+    // BRANCH
     ctx.beginPath();
-    ctx.moveTo(w*0.6,h/2);
-    ctx.lineTo(w*0.8,h*0.7);
+    ctx.moveTo(mergeX, branchY);
+    ctx.lineTo(mergeX, mainY);
     ctx.stroke();
 
-    // omniwheel rollers
+    // OMNIWHEELS MAIN
     for(let x=60; x<w-60; x+=40){
       ctx.save();
-      ctx.translate(x,h/2);
+      ctx.translate(x, mainY);
       ctx.rotate(Math.PI/4);
-      ctx.fillStyle="#666";
+      ctx.fillStyle="#555";
       ctx.fillRect(-6,-2,12,4);
       ctx.restore();
     }
 
-    // package movement
-    let x = 50 + progress*(w-100);
-    let y = h/2;
-
-    if(progress > 0.6){
-      let t = (progress-0.6)/0.4;
-      x = w*0.6 + t*(w*0.2);
-      y = h/2 + t*(h*0.2);
+    // OMNIWHEELS BRANCH
+    for(let y=branchY; y>mainY; y-=30){
+      ctx.save();
+      ctx.translate(mergeX, y);
+      ctx.rotate(-Math.PI/4);
+      ctx.fillStyle="#555";
+      ctx.fillRect(-6,-2,12,4);
+      ctx.restore();
     }
 
+    // PACKAGE A (main)
+    let speedMultiplier = 2.4;
+    let ax = 50 + Math.min(progress * speedMultiplier, 1) * (mergeX - 100);
+    let ay = mainY;
+
+    // PACKAGE B (branch)
+    let bx = mergeX;
+    let by = branchY - Math.min(progress * speedMultiplier, 1) * (branchY - mainY + 50);
+
+    // CONFLICT
+    let conflict = Math.abs(ax - mergeX) < 20 && Math.abs(by - mainY) < 20;
+
+    // RESOLUTION (AI)
+    if (conflict) {
+      by = Math.max(by, mainY + 30); // yield
+    }
+
+    // AFTER MERGE
+    if (progress > 0.7) {
+      ax = mergeX + (progress - 0.7) * (w * 0.4);
+    }
+
+    if (!conflict && progress > 0.6) {
+      by = mainY;
+      bx = mergeX + (progress - 0.6) * (w * 0.4);
+    }
+
+    // DRAW A
     ctx.fillStyle="#ff6a00";
     ctx.shadowColor="#ff6a00";
-    ctx.shadowBlur=20;
-    ctx.fillRect(x-12,y-12,24,24);
+    ctx.shadowBlur=15;
+    ctx.fillRect(ax-12, ay-12, 24, 24);
+
+    // DRAW B
+    ctx.fillStyle="#00d4ff";
+    ctx.shadowColor="#00d4ff";
+    ctx.shadowBlur=15;
+    ctx.fillRect(bx-12, by-12, 24, 24);
+
     ctx.shadowBlur=0;
 
     requestAnimationFrame(draw);
